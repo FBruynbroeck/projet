@@ -16,4 +16,26 @@ class User extends \Projet\App\ControllerAdmin {
         #$this->render(['title' => $title, 'user' => $user]);
         $this->render(compact('title', 'user'));
     }
+
+    public function edit($id){
+        $title = "Modifier l'utilisateur";
+        $this->loadModel('User');
+        $this->User->id = $id;
+        $user = $this->User->getOne();
+
+        if (!empty($_POST) && !empty($_POST['login']) && !empty($_POST['email'])){
+            if($_POST['password'] != $_POST['confirm_password'])
+            {
+                $_SESSION['error'] = "Votre mot de passe et votre mot de passe de confirmation ne correspondent pas...";
+            }
+            else
+            {
+                $this->User->update(['email' => $_POST['email']]);
+                $_SESSION['message'] = 'L\'utilisateur '.$user->login.' a bien été mis à jour';
+                $user = $this->User->getOne();
+            }
+        }
+        $view = 'user_edit';
+        $this->render(compact('title', 'user', 'view'));
+    }
 }
