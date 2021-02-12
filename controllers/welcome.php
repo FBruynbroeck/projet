@@ -4,7 +4,7 @@ namespace Projet\Controller;
 class Welcome extends \Projet\App\Controller {
 
     public function index(){
-        $title = "Bienvenue";
+        $title = "E-commerce";
         $this->render(compact('title'));
     }
 
