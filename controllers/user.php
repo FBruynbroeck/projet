@@ -1,28 +1,22 @@
 <?php
 namespace Projet\Controller;
 
-class User extends \Projet\App\ControllerAdmin {
+class User extends \Projet\App\ControllerClient {
 
-    public function index($id){
+    public function index(){
         $title = "Utilisateur";
         $this->loadModel('User');
-        if (!$id) {
-            $id = $_SESSION['login'];
-        }
-        $this->User->id = $id;
-        $user = $this->User->getOne();
+        $user = $this->current_user;
         # Faire ['title' => $title, 'user' => $user]
         # est égal à compact('title', 'user')
         #$this->render(['title' => $title, 'user' => $user]);
         $this->render(compact('title', 'user'));
     }
 
-    public function edit($id){
+    public function edit(){
         $title = "Modifier l'utilisateur";
         $this->loadModel('User');
-        $this->User->id = $id;
-        $user = $this->User->getOne();
-
+        $user = $this->current_user;
         if (!empty($_POST) && !empty($_POST['login']) && !empty($_POST['email'])){
             if($_POST['password'] != $_POST['confirm_password'])
             {
@@ -30,9 +24,15 @@ class User extends \Projet\App\ControllerAdmin {
             }
             else
             {
-                $this->User->update(['email' => $_POST['email']]);
+                $user->email = $_POST['email'];
+                $user->login = $_POST['login'];
+                if($_POST['password']){
+                    $user->setPassword($_POST['password']);
+                }
+                $user->update();
                 $_SESSION['message'] = 'L\'utilisateur '.$user->login.' a bien été mis à jour';
-                $user = $this->User->getOne();
+                header('Location: /user/'.$user->login.'/edit');
+                exit();
             }
         }
         $view = 'user_edit';
