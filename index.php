@@ -13,20 +13,23 @@ define('REQ_TYPE', $segments[0] ?? 'welcome');
 define('REQ_TYPE_ID', $segments[1] ?? Null);
 define('REQ_ACTION', $segments[2] ?? 'index');
 
-$file = ROOT.'controllers/'.REQ_TYPE.'.php';
-if(file_exists($file)){
-    require $file;
-    # new \Projet\Controller\User();
-    $controller = '\Projet\Controller\\'.ucfirst(REQ_TYPE);
-    $controller = new $controller();
+function get_controller($name) {
+    $file = ROOT.'controllers/'.$name.'.php';
+    if(file_exists($file)){
+        require $file;
+        $controller = '\Projet\Controller\\'.ucfirst($name);
+        $controller = new $controller();
+        return $controller;
+    }
+}
+
+$controller = get_controller(REQ_TYPE);
+if($controller){
     $method = REQ_ACTION;
     if (method_exists($controller, $method)){
         $controller->$method(REQ_TYPE_ID);
-    } else {
-        # Call 404
+        exit();
     }
 }
-else {
-    require ROOT.'controllers/404.php';
-}
-
+$notfound = get_controller('notfound');
+$notfound->index();
