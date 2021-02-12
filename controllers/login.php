@@ -4,20 +4,18 @@ namespace Projet\Controller;
 class Login extends \Projet\App\Controller {
 
     public function index(){
-        if(isset($_SESSION['login']))
+        if(isset($_SESSION['login_id']))
         {
             header('Location: /');
             exit();
         }
         elseif(isset($_POST['login']) && isset($_POST['password'])){
-            $login = $_POST['login'];
-            $password = $_POST['password'];
             $this->loadModel('User');
-            $this->User->id = $login;
-            $user = $this->User->getOne();
-            if($user && $user->verifyPassword($password)){
-                $_SESSION['login'] = $login;
-                $_SESSION['message'] = 'Bienvenue '.$login;
+            $user = $this->User::getByLogin($_POST['login']);
+            if($user && $user->verifyPassword($_POST['password'])){
+                $_SESSION['login_id'] = $user->id;
+                $_SESSION['role_id'] = $user->role_id;
+                $_SESSION['message'] = 'Bienvenue '.$user->login;
                 header('Location: /');
                 exit();
             }
