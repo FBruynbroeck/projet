@@ -1,3 +1,3 @@
 <div>
-Contenu de ma page d'accueil
+    Bienvenue sur le site E-commerce
 </div>
