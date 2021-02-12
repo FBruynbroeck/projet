@@ -7,8 +7,11 @@
         <link rel="stylesheet" href="/public/sticky-footer-navbar.css">
 
         <!-- jQuery and JS bundle w/ Popper.js -->
-        <script src="/public/jquery-3.5.1.slim.min.js"></script>
+        <script src="/public/jquery-3.5.1.min.js"></script>
         <script src="/public/bootstrap.bundle.min.js"></script>
+        <script src="/public/cart.js"></script>
+        <script src="/public/Chart.bundle.min.js"></script>
+        <script src="/public/chart.js"></script>
         <title><?php echo $title; ?></title>
     </head>
     <body>
