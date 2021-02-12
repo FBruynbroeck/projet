@@ -26,11 +26,11 @@ class User extends \Projet\App\Model {
         return password_verify($password, $this->password);
     }
 
-    public static function getById($id){
+    public static function getByLogin($login){
         $instance = new static();
-        $query = $instance->_pdo->prepare("select * from ".$instance->table." where ".$instance->pk." = :pk");
-        $query->execute([':pk' => $pk]);
-        $query->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, get_class($instance));
+        $query = $instance->_pdo->prepare("select * from ".$instance->table." where login = :login");
+        $query->execute([':login' => $login]);
+        $query->setFetchMode(\PDO::FETCH_CLASS, get_class($instance));
         return $query->fetch();
     }
 
