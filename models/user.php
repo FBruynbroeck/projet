@@ -1,14 +1,21 @@
 <?php
 namespace Projet\Model;
+require_once 'role.php';
 
 
 class User extends \Projet\App\Model {
-    protected $pk = 'login';
+    public $role_id;
+    protected $columns = ['id', 'login', 'password', 'role_id', 'email', 'valid'];
 
-    public function __construct($login=null, $password=null) {
+    public function __construct() {
         parent::__construct();
-        $this->login = $login;
-        $this->setPassword($password);
+        if($this->role_id){
+            $this->role = $this->getRole();
+        }
+    }
+
+    public function getRole(){
+        return Role::getByPk($this->role_id);
     }
 
     public function setPassword($password) {
