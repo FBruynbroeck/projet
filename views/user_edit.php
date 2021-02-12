@@ -1,9 +1,5 @@
 <form method="POST">
     <div class="form-group">
-        <label for="idid">Identifiant</label>
-        <input type="text" class="form-control" id="idid" name="id" value="<?= $user->id?>" readonly>
-    </div>
-    <div class="form-group">
         <label for="idlogin">Login</label>
         <input type="text" class="form-control" id="idlogin" name="login" value="<?= $user->login?>">
     </div>
