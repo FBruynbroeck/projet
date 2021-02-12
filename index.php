@@ -4,6 +4,7 @@ session_start();
 define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 require ROOT.'app/controller.php';
 require ROOT.'app/model.php';
+require ROOT.'app/init.php';
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = trim($uri, '/');
 $segments = array_filter(explode('/', $uri));
