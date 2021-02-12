@@ -9,8 +9,8 @@ abstract class Model {
 
     protected $_pdo;
     protected $table;
+    protected $columns = [];
     protected $pk = 'id';
-    public $id;
 
     public function __construct() {
         $reflection = new \ReflectionClass($this);
@@ -26,34 +26,62 @@ abstract class Model {
         }
     }
 
-    public function getAll(){
-        $query = $this->_pdo->prepare("select * from ".$this->table);
+    public static function getAll(){
+        $instance = new static();
+        $query = $instance->_pdo->prepare("select * from ".$instance->table);
         $query->execute();
+        $query->setFetchMode(\PDO::FETCH_CLASS, get_class($instance));
         return $query->fetchAll();
     }
 
-    public function getOne(){
-        $query = $this->_pdo->prepare("select * from ".$this->table." where ".$this->pk." = :id");
-        $query->execute([':id' => $this->id]);
-        $query->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, get_class($this));
+    public static function getByPk($pk) {
+        $instance = new static();
+        $query = $instance->_pdo->prepare("select * from ".$instance->table." where ".$instance->pk." = :pk");
+        $query->execute([':pk' => $pk]);
+        $query->setFetchMode(\PDO::FETCH_CLASS, get_class($instance));
         return $query->fetch();
     }
 
-    public function update($model)
+    public function update()
     {
         $champs = [];
         $valeurs = [];
-        $valeurs[':id'] = $this->id;
-        foreach($model as $champ => $valeur){
-            #champs[0] = "login = :login"
-            $champs[] = $champ.' = :'.$champ;
-            #valeur[':login'] = 'toto'
-            $valeurs[':'.$champ] = $valeur;
+        $valeurs[':pk'] = $this->{$this->pk};
+        foreach($this->columns as $column){
+            if($column != $this->pk){
+                $champ = $column;
+                $valeur = $this->$column;
+                #champs[0] = "login = :login"
+                $champs[] = $champ.' = :'.$champ;
+                #valeur[':login'] = 'toto'
+                $valeurs[':'.$champ] = $valeur;
+            }
         }
         # "login = :login, password = :password"
         $liste_champs = implode(', ', $champs);
-        $query = $this->_pdo->prepare("update ".$this->table." set ".$liste_champs." where ".$this->pk." = :id");
+        $query = $this->_pdo->prepare("update ".$this->table." set ".$liste_champs." where ".$this->pk." = :pk");
         return $query->execute($valeurs);
+    }
+
+    public function save()
+    {
+        $champs = [];
+        $valeurs = [];
+        foreach($this->columns as $column){
+            if($column != $this->pk){
+                $champ = $column;
+                $valeur = $this->$column;
+                #champs[0] = "login = :login"
+                $champs[] = $champ.' = :'.$champ;
+                #valeur[':login'] = 'toto'
+                $valeurs[':'.$champ] = $valeur;
+            }
+        }
+        # "login = :login, password = :password"
+        $liste_champs = implode(', ', $champs);
+        $query = $this->_pdo->prepare("insert into ".$this->table." set ".$liste_champs);
+        $query->execute($valeurs);
+        $this->{$this->pk} = $this->_pdo->lastInsertId();
     }
 
 }
