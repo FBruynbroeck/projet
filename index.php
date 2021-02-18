@@ -2,6 +2,7 @@
 session_start();
 // Constante permettant de récupérer le chemin complet de la racine du projet afin de garantir la portabilité.
 define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
+require ROOT.'app/config.php';
 require ROOT.'app/controller.php';
 require ROOT.'app/model.php';
 require ROOT.'app/init.php';

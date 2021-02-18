@@ -2,10 +2,10 @@
 namespace Projet\App;
 
 abstract class Model {
-    private $host = "localhost";
-    private $db_name = "cours";
-    private $db_user = "root";
-    private $db_pass = "password";
+    private $host = DB_HOST;
+    private $db_name = DB_NAME;
+    private $db_user = DB_USER;
+    private $db_pass = DB_PASS;
 
     protected $_pdo;
     protected $table;
