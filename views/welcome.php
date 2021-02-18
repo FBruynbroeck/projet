@@ -1,3 +1,3 @@
 <div>
-    Bienvenue sur le site E-commerce
+    Bienvenue sur le site <?= TITLE; ?>
 </div>

@@ -16,7 +16,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="/">E-commerce</a>
+            <a class="navbar-brand" href="/"><?= TITLE; ?></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -59,7 +59,7 @@ if(!empty($_SESSION['error'])){
         </main>
         <footer class="footer">
             <div class="container">
-                <span class="text-muted">E-commerce</span>
+                <span class="text-muted"><?= TITLE; ?></span>
             </div>
         </footer>
     </body>
